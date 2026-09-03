@@ -24,12 +24,6 @@ document.getElementById('menu-toggle').addEventListener('click', () => {
   document.getElementById('main-nav').classList.toggle('open');
 });
 
-/* ===================== HEADER SCROLL STATE ===================== */
-const header = document.getElementById('site-header');
-window.addEventListener('scroll', () => {
-  header.classList.toggle('solid', window.scrollY > 60);
-});
-
 /* ===================== SCROLL REVEAL ===================== */
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
@@ -53,6 +47,8 @@ panels.forEach(p => {
    de la misma hoja de precios, por lo que los precios de bebidas calientes y frías son los
    MISMOS en ambas sedes. Especiales y Extras no tuvieron confirmación en ese flyer: se
    mantienen los valores de la pizarra anterior. CONFIRMAR CARTA VIGENTE CON EL CLIENTE. */
+/* Para agregarle foto a un producto, súmale la propiedad img con la URL (jpg/png), ej:
+   { id:'c1', cat:'calientes', name:'Espresso', desc:'...', price:2200, img:'https://.../espresso.jpg' } */
 const MENU_CALIENTES = [
   { id:'c1', cat:'calientes', name:'Espresso', desc:'Base de toda la carta caliente.', price:2200 },
   { id:'c2', cat:'calientes', name:'Americano', desc:'Espresso doble alargado con agua caliente.', price:2500 },
@@ -114,8 +110,11 @@ function renderMenu(filter){
   items.forEach((item) => {
     const card = document.createElement('button');
     card.className = 'menu-card';
+    const media = item.img
+      ? `<img src="${item.img}" alt="${item.name}" class="menu-card-photo">`
+      : `<div class="menu-card-icon">${ICONS[item.cat]}</div>`;
     card.innerHTML = `
-      <div class="menu-card-icon">${ICONS[item.cat]}</div>
+      ${media}
       <div>
         <h4>${item.name}</h4>
         <p>${item.desc}</p>
@@ -142,7 +141,11 @@ const modalOverlay = document.getElementById('modal-overlay');
 let currentItem = null;
 function openModal(item){
   currentItem = item;
-  document.getElementById('modal-icon').innerHTML = ICONS[item.cat];
+  const iconEl = document.getElementById('modal-icon');
+  iconEl.innerHTML = item.img
+    ? `<img src="${item.img}" alt="${item.name}" class="modal-photo">`
+    : ICONS[item.cat];
+  iconEl.classList.toggle('modal-icon--photo', !!item.img);
   document.getElementById('modal-name').textContent = item.name;
   document.getElementById('modal-desc').textContent = item.desc;
   document.getElementById('modal-note').textContent = item.note || '';
@@ -257,7 +260,15 @@ const LOCATIONS = {
     address: 'Av. Irarrázaval 3601, Local 4<br>Edificio Acuario, Ñuñoa, Región Metropolitana',
     footerAddress: 'Av. Irarrázaval 3601, Local 4 · Edificio Acuario · Ñuñoa',
     mapsQuery: 'Av.+Irarrazaval+3601+Local+4+Nunoa+Santiago',
-    mapsReviews: 'https://www.google.com/maps/search/?api=1&query=Cafeter%C3%ADa+Seis+Siete+Ocho+%C3%91u%C3%B1oa',
+    placeId: '0x9662cf51b22f9a7f:0xbdac1229df6d73c5',
+    mapsReviews: 'https://search.google.com/local/writereview?placeid=0x9662cf51b22f9a7f:0xbdac1229df6d73c5',
+    rating: '5.0',
+    ratingCount: 125,
+    reviews: [
+      { text: 'Este último tiempo ha sido y es mi cafetería favorita, voy todos los días me encanta el cafecito, y sobretodo conversar con Nati, Benja y Nico. Se ha hecho un grupito hermoso de conversaciones matutinas. Lo recomiendo 100%.', author: 'Shannon Figueroa Briones', meta: 'Google Maps · Consumo en el lugar' },
+      { text: 'Para mí el mejor café, en todas sus preparaciones desde un capuccino a un espresso cranberry. Los chicos que le dan el nombre 678 son muy simpáticos y amables. Se les tiene mucho cariño a este equipo.', author: 'Alison Marttz', meta: 'Google Maps · 6 opiniones' },
+      { text: 'Tenía muchas ganas de ir a este cafecito. No defraudó. Me tomé un flat white muy rico, la leche bien texturizada y firme. Me dijeron que trabajan todo sin lactosa, excelente para mí. El lugar es pequeño y muy acogedor.', author: 'Javiera Pérez de Albéniz', meta: 'Google Maps · Local Guide · 106 opiniones' },
+    ],
     hours: {
       0: null,
       1: { open: 7.5, close: 19.5 }, 2: { open: 7.5, close: 19.5 }, 3: { open: 7.5, close: 19.5 },
@@ -275,7 +286,14 @@ const LOCATIONS = {
     address: 'Av. Inglaterra 0895, Local 102<br>Temuco, Región de La Araucanía',
     footerAddress: 'Av. Inglaterra 0895, Local 102 · Temuco',
     mapsQuery: 'Av.+Inglaterra+0895+Local+102+Temuco',
-    mapsReviews: 'https://www.google.com/maps/search/?api=1&query=Cafeter%C3%ADa+Seis+Siete+Ocho+Temuco',
+    placeId: '0x9614d37f245053e9:0x297fe5ef024c4745',
+    mapsReviews: 'https://search.google.com/local/writereview?placeid=0x9614d37f245053e9:0x297fe5ef024c4745',
+    /* Rating y cantidad de opiniones verificados en Google Maps. Los textos de reseñas de Temuco
+       los va a mandar el cliente — agrégalos aquí en el mismo formato que las de Santiago
+       (text, author, meta) cuando lleguen. */
+    rating: '4.9',
+    ratingCount: 27,
+    reviews: [],
     hours: {
       0: null,
       1: { open: 8.5, close: 20.5 }, 2: { open: 8.5, close: 20.5 }, 3: { open: 8.5, close: 20.5 },
@@ -315,6 +333,29 @@ function renderHours(){
   }
 }
 
+function renderReviews(){
+  const loc = LOCATIONS[currentLoc];
+  const grid = document.getElementById('reviews-grid');
+  document.getElementById('reviews-stars').textContent = loc.rating ? '★★★★★' : '';
+  document.getElementById('reviews-rating').textContent = loc.rating || '—';
+  document.getElementById('reviews-caption').textContent = loc.ratingCount
+    ? `${loc.ratingCount} opiniones en Google Maps`
+    : `Reseñas de ${loc.label} próximamente`;
+
+  if (loc.reviews.length === 0){
+    grid.innerHTML = `<p class="reviews-empty">Todavía no tenemos reseñas cargadas de la sede ${loc.label}. ¡Vuelve pronto!</p>`;
+    return;
+  }
+  grid.innerHTML = loc.reviews.map((r, i) => `
+    <article class="review-card fade-up" style="transition-delay:${(i * 0.08).toFixed(2)}s">
+      <div class="stars-row small">★★★★★</div>
+      <p class="review-text">"${r.text}"</p>
+      <p class="review-author">${r.author}</p>
+      <p class="review-meta">${r.meta}</p>
+    </article>`).join('');
+  grid.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+}
+
 function applyLocation(id){
   currentLoc = id;
   const loc = LOCATIONS[id];
@@ -327,11 +368,13 @@ function applyLocation(id){
   document.getElementById('footer-address').textContent = loc.footerAddress;
   document.getElementById('visitanos-map').src = `https://www.google.com/maps?q=${loc.mapsQuery}&output=embed`;
   document.getElementById('maps-reviews-link').href = loc.mapsReviews;
+  document.getElementById('directions-link').href = `https://www.google.com/maps/dir/?api=1&destination=Seis+Siete+Ocho+${loc.label}&destination_place_id=${loc.placeId}`;
   document.querySelectorAll('.loc-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.loc === id);
   });
   renderHours();
   renderMenu(activeCat);
+  renderReviews();
   refreshOrderBarLink();
 }
 
