@@ -99,6 +99,16 @@ const ICONS = {
   extras: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" width="100%" height="100%"><path d="M12 4v16M4 12h16"/></svg>'
 };
 
+/* "Fotos" genéricas livianas (SVG vectorial, no pesa nada) para productos sin foto real todavía.
+   Cuando el cliente mande la foto real de un producto, súmale `img:'URL'` al item en MENU_* y esto
+   se reemplaza solo. */
+const GENERIC_PHOTO = {
+  calientes: '<svg viewBox="0 0 100 70" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"><rect width="100" height="70" fill="var(--verde)"/><g stroke="var(--lavanda)" stroke-width="1.6" fill="none" opacity=".85"><path d="M30 30h34v13a13 13 0 0 1-13 13H43a13 13 0 0 1-13-13V30z"/><path d="M64 33h4a6.5 6.5 0 0 1 0 13h-4"/><path d="M40 24c0 2-2.5 2-2.5 4.5S40 31 40 33M50 24c0 2-2.5 2-2.5 4.5S50 31 50 33"/></g></svg>',
+  frias: '<svg viewBox="0 0 100 70" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"><rect width="100" height="70" fill="var(--verde)"/><g stroke="var(--lavanda)" stroke-width="1.6" fill="none" opacity=".85"><path d="M35 22h30l-3 34a4 4 0 0 1-4 4H42a4 4 0 0 1-4-4l-3-34z"/><path d="M39 30h22M37 40h26"/></g></svg>',
+  especiales: '<svg viewBox="0 0 100 70" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"><rect width="100" height="70" fill="var(--verde)"/><g stroke="var(--lavanda)" stroke-width="1.6" fill="none" opacity=".85"><path d="M50 15v6M50 49v6M20 35h6M74 35h6M28 13l4.2 4.2M67.8 52.8l4.2 4.2M28 57l4.2-4.2M67.8 17.2l4.2-4.2"/><circle cx="50" cy="35" r="14"/></g></svg>',
+  extras: '<svg viewBox="0 0 100 70" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"><rect width="100" height="70" fill="var(--verde)"/><g stroke="var(--lavanda)" stroke-width="1.6" fill="none" opacity=".85"><path d="M50 12v46M27 35h46"/></g></svg>',
+};
+
 /* ===================== RENDER MENU ===================== */
 let activeCat = 'todas';
 const grid = document.getElementById('menu-grid');
@@ -112,7 +122,7 @@ function renderMenu(filter){
     card.className = 'menu-card';
     const media = item.img
       ? `<img src="${item.img}" alt="${item.name}" class="menu-card-photo">`
-      : `<div class="menu-card-icon">${ICONS[item.cat]}</div>`;
+      : `<div class="menu-card-photo menu-card-photo--generic">${GENERIC_PHOTO[item.cat]}</div>`;
     card.innerHTML = `
       ${media}
       <div>
@@ -144,8 +154,8 @@ function openModal(item){
   const iconEl = document.getElementById('modal-icon');
   iconEl.innerHTML = item.img
     ? `<img src="${item.img}" alt="${item.name}" class="modal-photo">`
-    : ICONS[item.cat];
-  iconEl.classList.toggle('modal-icon--photo', !!item.img);
+    : GENERIC_PHOTO[item.cat];
+  iconEl.classList.add('modal-icon--photo');
   document.getElementById('modal-name').textContent = item.name;
   document.getElementById('modal-desc').textContent = item.desc;
   document.getElementById('modal-note').textContent = item.note || '';
@@ -249,11 +259,8 @@ function refreshOrderBarLink(){
    highlight oficial de Instagram, que es la fuente más confiable disponible. */
 const DIAS = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
-/* Las 2 fotos de "local-photo-1/2" (sección Historia) son las de Santiago (barra + estación) y
-   por ahora son fijas para ambas sedes — todavía no tengo los archivos de las 3 fotos de Temuco
-   como imágenes descargables (solo las vi pegadas en el chat, no las puedo tomar desde ahí).
-   Cuando el cliente las mande como archivo, reemplaza el src de #local-photo-1/2 en index.html
-   (o conviértelo en swap por JS con un array localPhotos por sede, como MENUS/LOCATIONS). */
+/* Las fotos de Temuco en la galería de Historia (.local-gallery-pending) están pendientes de que
+   el cliente mande los archivos reales — reemplaza esos <div> por <img> en index.html cuando lleguen. */
 
 const LOCATIONS = {
   scl: {
