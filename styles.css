@@ -252,14 +252,15 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
 .destacada-card{
   position:relative; aspect-ratio:4/5; border-radius:8px; overflow:hidden;
   display:flex; align-items:flex-end; padding:20px;
-  background:linear-gradient(155deg, var(--verde), var(--verdosc));
+  background-color:var(--verde); background-size:cover; background-position:center;
   transition:transform .25s ease, box-shadow .25s ease;
 }
 .destacada-card:hover, .destacada-card:focus-visible{ transform:translateY(-4px) scale(1.015); box-shadow:0 16px 32px rgba(20,31,23,.25); }
 .destacada-card::before{
-  content:''; position:absolute; inset:0; opacity:0; background:rgba(245,240,228,.08); transition:opacity .25s ease;
+  content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(20,31,23,.85), rgba(20,31,23,.05) 55%);
+  transition:opacity .25s ease;
 }
-.destacada-card:hover::before, .destacada-card:focus-visible::before{ opacity:1; }
+.destacada-card:hover::before, .destacada-card:focus-visible::before{ opacity:.7; }
 .destacada-icon{
   position:absolute; top:16px; right:16px; width:34px; height:34px; border-radius:50%;
   background:rgba(245,240,228,.12); color:var(--crema); display:flex; align-items:center; justify-content:center;
