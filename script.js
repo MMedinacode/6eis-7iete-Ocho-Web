@@ -249,6 +249,12 @@ function refreshOrderBarLink(){
    highlight oficial de Instagram, que es la fuente más confiable disponible. */
 const DIAS = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
+/* Las 2 fotos de "local-photo-1/2" (sección Historia) son las de Santiago (barra + estación) y
+   por ahora son fijas para ambas sedes — todavía no tengo los archivos de las 3 fotos de Temuco
+   como imágenes descargables (solo las vi pegadas en el chat, no las puedo tomar desde ahí).
+   Cuando el cliente las mande como archivo, reemplaza el src de #local-photo-1/2 en index.html
+   (o conviértelo en swap por JS con un array localPhotos por sede, como MENUS/LOCATIONS). */
+
 const LOCATIONS = {
   scl: {
     label: 'Santiago',
@@ -259,7 +265,7 @@ const LOCATIONS = {
     historiaP2: 'Cada número tiene su propia bebida — y cada bebida, una razón de estación. El resto de la carta se apoya siempre en lo mismo: espresso doble, buena leche texturizada y ningún atajo.',
     address: 'Av. Irarrázaval 3601, Local 4<br>Edificio Acuario, Ñuñoa, Región Metropolitana',
     footerAddress: 'Av. Irarrázaval 3601, Local 4 · Edificio Acuario · Ñuñoa',
-    mapsQuery: 'Av.+Irarrazaval+3601+Local+4+Nunoa+Santiago',
+    mapsQuery: 'Seis+Siete+Ocho+Av.+Irarrazaval+3601+Local+4+Nunoa+Santiago',
     placeId: '0x9662cf51b22f9a7f:0xbdac1229df6d73c5',
     mapsReviews: 'https://search.google.com/local/writereview?placeid=0x9662cf51b22f9a7f:0xbdac1229df6d73c5',
     rating: '5.0',
@@ -285,15 +291,16 @@ const LOCATIONS = {
     historiaP2: 'Cada número tiene su propia bebida — y cada bebida, una razón de estación. El resto de la carta se apoya siempre en lo mismo: espresso doble, buena leche texturizada y ningún atajo.',
     address: 'Av. Inglaterra 0895, Local 102<br>Temuco, Región de La Araucanía',
     footerAddress: 'Av. Inglaterra 0895, Local 102 · Temuco',
-    mapsQuery: 'Av.+Inglaterra+0895+Local+102+Temuco',
+    mapsQuery: 'Seis+Siete+Ocho+Av.+Inglaterra+0895+Local+102+Temuco',
     placeId: '0x9614d37f245053e9:0x297fe5ef024c4745',
     mapsReviews: 'https://search.google.com/local/writereview?placeid=0x9614d37f245053e9:0x297fe5ef024c4745',
-    /* Rating y cantidad de opiniones verificados en Google Maps. Los textos de reseñas de Temuco
-       los va a mandar el cliente — agrégalos aquí en el mismo formato que las de Santiago
-       (text, author, meta) cuando lleguen. */
     rating: '4.9',
     ratingCount: 27,
-    reviews: [],
+    reviews: [
+      { text: 'Todo un 10/10. Probamos un filtrado (el mejor que he probado en Temuco) con una galleta de chocolate sabor naranja buenísima y un postre francés llamado Canele, la misma chica que atendía dijo que preparaba. Ambiente perfecto para la mañana o la tardecita, es tranquilo y super acogedor. <3', author: 'Pía', meta: 'Google Maps · Local Guide · 34 opiniones' },
+      { text: 'La mejor cafetería de especialidad de Temuco, el ambiente acogedor, la atención muy buena, buenos precios, muy recomendable.', author: 'Camila Abril', meta: 'Google Maps · Local Guide · 17 opiniones' },
+      { text: 'Rico café, tradicionales como latte, espresso y filtrados, además de preparaciones de temporada como el espresso mandarina o espresso cranberry. Los baristas muy simpáticos, atentos y dispuestos a guiarte para hacer que la visita sea toda una experiencia. Buena variedad de snacks dulces.', author: 'Roberto Inostroza', meta: 'Google Maps · 1 opinión' },
+    ],
     hours: {
       0: null,
       1: { open: 8.5, close: 20.5 }, 2: { open: 8.5, close: 20.5 }, 3: { open: 8.5, close: 20.5 },
