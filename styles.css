@@ -89,6 +89,13 @@ button{ font-family:inherit; cursor:pointer; border:none; background:none; color
   font-family:var(--font-mono); font-size:11px; letter-spacing:.15em; text-transform:uppercase;
 }
 @media(min-width:960px){ .main-nav{ display:flex; } }
+.main-nav.open{
+  display:flex !important; position:fixed; top:var(--header-h); left:0; right:0; z-index:99;
+  background:var(--verde); flex-direction:column; align-items:flex-start; gap:0;
+  padding:8px 0; box-shadow:0 4px 12px rgba(20,31,23,.25);
+}
+.main-nav.open .nav-link{ width:100%; padding:16px 20px; border-top:1px solid rgba(245,240,228,.1); opacity:1; }
+@media(min-width:960px){ .main-nav.open{ position:static; box-shadow:none; padding:0; } }
 .nav-link{ color:var(--crema); opacity:.7; transition:opacity .2s ease,color .2s ease; padding:6px 0; position:relative; }
 .nav-link:hover{ opacity:1; }
 .nav-link.active{ opacity:1; color:var(--amarillo); }
