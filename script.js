@@ -273,6 +273,10 @@ const LOCATIONS = {
     address: 'Av. Irarrázaval 3601, Local 4<br>Edificio Acuario, Ñuñoa, Región Metropolitana',
     footerAddress: 'Av. Irarrázaval 3601, Local 4 · Edificio Acuario · Ñuñoa',
     mapsQuery: 'Seis+Siete+Ocho+Av.+Irarrazaval+3601+Local+4+Nunoa+Santiago',
+    // Embed REAL de la ficha (coordenadas y place id sacados de la URL de
+    // Google Maps del local, 09-09-2026): marca el pin del negocio, no solo
+    // la dirección como hacía el iframe genérico anterior.
+    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3329.0!2d-70.5930557!3d-33.4555097!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662cf51b22f9a7f%3A0xbdac1229df6d73c5!2sCafeter%C3%ADa%20Seis%20Siete%20Ocho!5e0!3m2!1ses-419!2scl!4v1789005200000!5m2!1ses-419!2scl',
     placeId: '0x9662cf51b22f9a7f:0xbdac1229df6d73c5',
     mapsReviews: 'https://search.google.com/local/writereview?placeid=0x9662cf51b22f9a7f:0xbdac1229df6d73c5',
     rating: '5.0',
@@ -299,6 +303,8 @@ const LOCATIONS = {
     address: 'Av. Inglaterra 0895, Local 102<br>Temuco, Región de La Araucanía',
     footerAddress: 'Av. Inglaterra 0895, Local 102 · Temuco',
     mapsQuery: 'Seis+Siete+Ocho+Av.+Inglaterra+0895+Local+102+Temuco',
+    // Embed REAL de la ficha del local de Temuco (09-09-2026).
+    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3129.0!2d-72.6137881!3d-38.7305604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9614d37f245053e9%3A0x297fe5ef024c4745!2sSeis%20Siete%20Ocho%20Temuco!5e0!3m2!1ses-419!2scl!4v1789005210000!5m2!1ses-419!2scl',
     placeId: '0x9614d37f245053e9:0x297fe5ef024c4745',
     mapsReviews: 'https://search.google.com/local/writereview?placeid=0x9614d37f245053e9:0x297fe5ef024c4745',
     rating: '4.9',
@@ -380,7 +386,7 @@ function applyLocation(id){
   document.getElementById('visitanos-title').innerHTML = loc.title;
   document.getElementById('visitanos-address').innerHTML = loc.address;
   document.getElementById('footer-address').textContent = loc.footerAddress;
-  document.getElementById('visitanos-map').src = `https://www.google.com/maps?q=${loc.mapsQuery}&output=embed`;
+  document.getElementById('visitanos-map').src = loc.mapEmbed;
   document.getElementById('maps-reviews-link').href = loc.mapsReviews;
   document.getElementById('directions-link').href = `https://www.google.com/maps/dir/?api=1&destination=Seis+Siete+Ocho+${loc.label}&destination_place_id=${loc.placeId}`;
   document.querySelectorAll('.loc-btn').forEach(b => {
