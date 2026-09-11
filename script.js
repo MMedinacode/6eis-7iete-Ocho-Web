@@ -278,6 +278,7 @@ const LOCATIONS = {
     // la dirección como hacía el iframe genérico anterior.
     mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3329.0!2d-70.5930557!3d-33.4555097!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662cf51b22f9a7f%3A0xbdac1229df6d73c5!2sCafeter%C3%ADa%20Seis%20Siete%20Ocho!5e0!3m2!1ses-419!2scl!4v1789005200000!5m2!1ses-419!2scl',
     placeId: '0x9662cf51b22f9a7f:0xbdac1229df6d73c5',
+    waze: 'https://waze.com/ul?ll=-33.4555097,-70.5930557&navigate=yes',
     mapsReviews: 'https://search.google.com/local/writereview?placeid=0x9662cf51b22f9a7f:0xbdac1229df6d73c5',
     rating: '5.0',
     ratingCount: 125,
@@ -306,6 +307,7 @@ const LOCATIONS = {
     // Embed REAL de la ficha del local de Temuco (09-09-2026).
     mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3129.0!2d-72.6137881!3d-38.7305604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9614d37f245053e9%3A0x297fe5ef024c4745!2sSeis%20Siete%20Ocho%20Temuco!5e0!3m2!1ses-419!2scl!4v1789005210000!5m2!1ses-419!2scl',
     placeId: '0x9614d37f245053e9:0x297fe5ef024c4745',
+    waze: 'https://waze.com/ul?ll=-38.7305604,-72.6137881&navigate=yes',
     mapsReviews: 'https://search.google.com/local/writereview?placeid=0x9614d37f245053e9:0x297fe5ef024c4745',
     rating: '4.9',
     ratingCount: 27,
@@ -389,6 +391,7 @@ function applyLocation(id){
   document.getElementById('visitanos-map').src = loc.mapEmbed;
   document.getElementById('maps-reviews-link').href = loc.mapsReviews;
   document.getElementById('directions-link').href = `https://www.google.com/maps/dir/?api=1&destination=Seis+Siete+Ocho+${loc.label}&destination_place_id=${loc.placeId}`;
+  document.getElementById('waze-link').href = loc.waze;
   document.querySelectorAll('.loc-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.loc === id);
   });
